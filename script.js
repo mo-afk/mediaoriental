@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   var sEl=document.getElementById('stats');if(sEl){var sO=new IntersectionObserver(function(e){if(e[0].isIntersecting){runCounters();sO.unobserve(sEl)}},{threshold:.3});sO.observe(sEl)}
 
-  /* ========================================
-     ★ SHOWCASE CAROUSEL — défile une par une
-     ======================================== */
+  /* SHOWCASE CAROUSEL */
   var showTrack = document.getElementById('showTrack');
   var showViewport = document.getElementById('showViewport');
   var showLeft = document.getElementById('showLeft');
@@ -32,16 +30,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentShow = 0;
 
   function getVisibleCount() {
-  if (window.innerWidth <= 1024) return 1;  // mobile + tablet = 1
-  return 4;  // desktop = 4
-}
+    if (window.innerWidth <= 1024) return 1;
+    return 4;
+  }
 
   function updateShow() {
     var visible = getVisibleCount();
     var maxIndex = Math.max(0, totalShow - visible);
     if (currentShow > maxIndex) currentShow = maxIndex;
 
-    // Calculer le déplacement
     var card = showCards[0];
     var style = getComputedStyle(showTrack);
     var gap = parseInt(style.gap) || 20;
@@ -49,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     showTrack.style.transform = 'translateX(' + (-currentShow * cardW) + 'px)';
 
-    // Update progress bar
     if (showProgress) {
       var progressWidth = (visible / totalShow) * 100;
       var progressLeft = (currentShow / totalShow) * 100;
@@ -57,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
       showProgress.style.left = progressLeft + '%';
     }
 
-    // Disable arrows aux extrêmes
     showLeft.disabled = currentShow === 0;
     showRight.disabled = currentShow >= maxIndex;
   }
@@ -77,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // VIDEO play on hover (desktop) / tap (mobile)
   showCards.forEach(function (card) {
     var video = card.querySelector('.show-video');
     var frame = card.querySelector('.show-frame');
@@ -115,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Touch swipe pour mobile
   var stx = 0;
   showViewport.addEventListener('touchstart', function (e) { stx = e.touches[0].clientX; }, { passive: true });
   showViewport.addEventListener('touchend', function (e) {
@@ -139,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
   allPC.forEach(function(card){var video=card.querySelector('.port-video');if(!video)return;card.addEventListener('mouseenter',function(){if(window.innerWidth<=768)return;video.play().catch(function(){});card.classList.add('playing')});card.addEventListener('mouseleave',function(){if(window.innerWidth<=768)return;video.pause();video.currentTime=0;card.classList.remove('playing')});card.querySelector('.port-media').addEventListener('click',function(e){if(window.innerWidth>768)return;e.preventDefault();if(card.classList.contains('playing')){video.pause();video.currentTime=0;card.classList.remove('playing')}else{allPC.forEach(function(c){var v=c.querySelector('.port-video');if(v&&c!==card){v.pause();v.currentTime=0;c.classList.remove('playing')}});video.play().catch(function(){});card.classList.add('playing')}})});
 
   /* TESTI CAROUSEL */
-  var track=document.getElementById('carouselTrack'),prev=document.getElementById('carPrev'),next2=document.getElementById('carNext'),dots=document.querySelectorAll('[data-i]'),cur=0,total=3,autoId;
+  var track=document.getElementById('carouselTrack'),prev=document.getElementById('carPrev'),next2=document.getElementById('carNext'),dots=document.querySelectorAll('[data-i]'),cur=0,total=10,autoId;
   function goTo(i){if(i<0)i=total-1;if(i>=total)i=0;cur=i;track.style.transform='translateX(-'+cur*100+'%)';dots.forEach(function(d,idx){d.classList.toggle('active',idx===cur)})}
   function an(){goTo(cur+1)}function ra(){clearInterval(autoId);autoId=setInterval(an,5000)}
   prev.addEventListener('click',function(){goTo(cur-1);ra()});next2.addEventListener('click',function(){goTo(cur+1);ra()});
@@ -147,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var tx2=0;track.addEventListener('touchstart',function(e){tx2=e.changedTouches[0].screenX},{passive:true});track.addEventListener('touchend',function(e){var diff=tx2-e.changedTouches[0].screenX;if(Math.abs(diff)>50){diff>0?goTo(cur+1):goTo(cur-1);ra()}},{passive:true});
 
   /* TEAM CAROUSEL */
-  var teamTrack=document.getElementById('teamTrack'),teamPrev=document.getElementById('teamPrev'),teamNext=document.getElementById('teamNext'),teamDots=document.querySelectorAll('[data-ti]'),teamCur=0,teamTotal=3,teamAutoId;
+  var teamTrack=document.getElementById('teamTrack'),teamPrev=document.getElementById('teamPrev'),teamNext=document.getElementById('teamNext'),teamDots=document.querySelectorAll('[data-ti]'),teamCur=0,teamTotal=8,teamAutoId;
   function teamGoTo(i){if(i<0)i=teamTotal-1;if(i>=teamTotal)i=0;teamCur=i;teamTrack.style.transform='translateX(-'+teamCur*100+'%)';teamDots.forEach(function(d,idx){d.classList.toggle('active',idx===teamCur)})}
   function teamAn(){teamGoTo(teamCur+1)}function teamRa(){clearInterval(teamAutoId);teamAutoId=setInterval(teamAn,6000)}
   if(teamTrack&&teamPrev&&teamNext){
