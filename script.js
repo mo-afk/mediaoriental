@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
   updateShow();
   window.addEventListener('resize', updateShow);
 
-  /* PORTFOLIO FILTERS - IMAGES ONLY */
+  /* PORTFOLIO FILTERS */
   var fBtns=document.querySelectorAll('.filter-btn'),pCards=document.querySelectorAll('.port-card');
   fBtns.forEach(function(btn){
     btn.addEventListener('click',function(){
